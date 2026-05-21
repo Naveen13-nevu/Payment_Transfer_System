@@ -1,30 +1,23 @@
 package com.transfer.Payment_Transfer.entity;
 
-
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.math.BigDecimal;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@Table(name = "accounts")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String accountNumber;
+    private String name;
 
-    @Column(nullable = false)
-    private BigDecimal balance = new BigDecimal("10000.00");
+    private double balance;
 
-    private String accountType = "Savings";
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
 
 }
