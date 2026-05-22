@@ -1,27 +1,52 @@
 package com.transfer.Payment_Transfer.controller;
 
+import com.transfer.Payment_Transfer.entity.Account;
 import com.transfer.Payment_Transfer.service.BankService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/bank")
+@RequestMapping("/api/accounts")
+@RequiredArgsConstructor
 public class AccountController {
 
     private final BankService bankService;
 
-    public AccountController(BankService bankService) {
-        this.bankService = bankService;
+
+    @PostMapping
+    public Account create(@RequestBody Account account) {
+        return bankService.createAccount(account);
     }
 
-    // Transfer Money API
+
+    @GetMapping("/{id}")
+    public Account get(@PathVariable Long id) {
+        return bankService.getAccount(id);
+    }
+
+
+    @PutMapping("/deposit")
+    public Account deposit(@RequestParam String accountNumber,
+                           @RequestParam Double amount) {
+
+        return bankService.deposit(accountNumber, amount);
+    }
+
+
     @PostMapping("/transfer")
-    public String transferMoney(
-            @RequestParam Long fromId,
-            @RequestParam Long toId,
-            @RequestParam double amount) {
+    public String transfer(@RequestParam String fromAccount,
+                           @RequestParam String toAccount,
+                           @RequestParam Double amount) {
 
-        bankService.transferMoney(fromId, toId, amount);
+        return bankService.transferMoney(
+                fromAccount,
+                toAccount,
+                amount
+        );
+    }
 
-        return "Money transferred successfully!";
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id) {
+        return bankService.deleteAccount(id);
     }
 }
